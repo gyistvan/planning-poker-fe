@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import { uuid } from 'uuidv4'
 import { AppState } from './app.interface'
 
+const env = process.env.NODE_ENV
+
 const getClientId = (): string => {
   let clientId = localStorage.getItem('clientId')
   if (!clientId) {
@@ -10,6 +12,11 @@ const getClientId = (): string => {
   }
   return clientId
 }
+
+const getSocketUrl = (port: number) =>
+  env === 'production'
+    ? `https://planning-poker-vyno-be.herokuapp.com:${port}`
+    : `http://127.0.0.1:${port}`
 
 const initialState: AppState = {
   socketUrl: undefined,
@@ -25,7 +32,7 @@ export const appSlice = createSlice({
   initialState,
   reducers: {
     changeSocketUrl: (state, action) => {
-      state.socketUrl = `ws://localhost:${action.payload}`
+      state.socketUrl = getSocketUrl(action.payload)
     },
     changeClientName: (state, action) => {
       state.clientName = action.payload
