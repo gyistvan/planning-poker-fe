@@ -6,6 +6,7 @@ import {
   changeJoinRoomVisibility,
   changeSocketUrl,
 } from '../../store/app/app.slice'
+import { changeRoomName } from '../../store/room/room.slice'
 import { ClientNameInput } from '../room/ClientNameInput/ClientNameInput'
 import CreateJoinRoom from '../room/CreateJoinRoom'
 
@@ -23,6 +24,7 @@ export const JoinRoom = () => {
     let {
       data: { port },
     } = await axios.post(`joinRoom/${roomName}/${clientId}/${clientName}`)
+    await dispatch(changeRoomName(roomName))
     await dispatch(changeSocketUrl(port))
     await dispatch(changeJoinRoomVisibility(false))
 

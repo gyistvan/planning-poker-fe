@@ -25,6 +25,7 @@ export default function CreateJoinRoom(props: ICreateRoom) {
     axios
       .post(`createRoom/${roomName}/${clientId}/${clientName}`)
       .then((response: any) => {
+        console.log(response.data.port, "poooort")
         dispatch(changeSocketUrl(response.data.port))
         dispatch(changeCreateRoomVisibility(false))
       })

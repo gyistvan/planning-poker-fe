@@ -12,7 +12,8 @@ import { UserList } from '../UserList/UserList'
 export default function ActualRoom() {
   const { votes } = useSelector((state: any) => state.votes)
   const { socketUrl, clientId } = useSelector((state: any) => state.app)
-  const { sendMessage, lastMessage } = useWebSocket(socketUrl, {
+  const { roomName } = useSelector((state: any) => state.roomSettings);
+  const { sendMessage, lastMessage } = useWebSocket(`${socketUrl}/${roomName}`, {
     onOpen: () => console.log('opened'),
   })
   const roomSettings = useSelector((state: any) => state.roomSettings)

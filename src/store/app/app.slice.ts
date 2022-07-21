@@ -25,7 +25,7 @@ export const appSlice = createSlice({
   initialState,
   reducers: {
     changeSocketUrl: (state, action) => {
-      state.socketUrl = 'ws://localhost:' + action.payload
+      state.socketUrl = `ws://localhost:${action.payload}`
     },
     changeClientName: (state, action) => {
       state.clientName = action.payload
