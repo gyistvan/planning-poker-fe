@@ -15,7 +15,7 @@ const getClientId = (): string => {
 
 const getSocketUrl = (port: number) =>
   env === 'production'
-    ? `wss://planning-poker-vyno-be.herokuapp.com:${port}`
+    ? `wss://planning-poker-vyno-be.herokuapp.com`
     : `ws://127.0.0.1:${port}`
 
 const initialState: AppState = {
