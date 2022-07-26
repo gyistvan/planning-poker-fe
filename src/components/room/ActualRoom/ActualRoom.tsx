@@ -1,22 +1,26 @@
-import React, { useEffect, useState } from 'react'
-import { Box, List, ListItem, ListItemText, Typography } from '@mui/material'
+import React, { useEffect } from 'react'
+import { Box, Typography } from '@mui/material'
 import useWebSocket from 'react-use-websocket'
-import { Card, RoomSettings } from '../../../store/room/room.interface'
-import RoomOptions from '../RoomOptions/RoomOptions'
+import { Card } from '../../../store/room/room.interface'
 import VoteCard from '../voteCard/VoteCard'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeSettings } from '../../../store/room/room.slice'
 import { changeVotes } from '../../../store/vote/vote.slice'
 import { UserList } from '../UserList/UserList'
+import { showAlert, useAppSelector } from '../../../store/app/app.slice'
+import { createAlertObj } from '../../../utils/createAlertObj'
 
 export default function ActualRoom() {
   const { votes } = useSelector((state: any) => state.votes)
-  const { socketUrl, clientId } = useSelector((state: any) => state.app)
-  const { roomName } = useSelector((state: any) => state.roomSettings);
-  const { sendMessage, lastMessage } = useWebSocket(`${socketUrl}/${roomName}`, {
-    onOpen: () => console.log('opened'),
-  })
+  const { socketUrl, clientId } = useAppSelector()
+  const { roomName } = useSelector((state: any) => state.roomSettings)
   const roomSettings = useSelector((state: any) => state.roomSettings)
+  const { sendMessage, lastMessage } = useWebSocket(
+    `${socketUrl}/${roomName}`,
+    {
+      onOpen: () => console.log('opened'),
+    }
+  )
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -24,12 +28,24 @@ export default function ActualRoom() {
       let parsedData = JSON.parse(lastMessage.data)
       console.log(parsedData, 'parsedData')
       if (parsedData.state) {
-        console.log(parsedData.state)
         dispatch(changeVotes(parsedData.state))
       }
       if (parsedData.settings) {
-        console.log(parsedData.settings)
         dispatch(changeSettings(parsedData.settings))
+      }
+      if (
+        parsedData.newClientConnected &&
+        parsedData.newClientConnected.clientId !== clientId
+      ) {
+        dispatch(
+          showAlert(
+            createAlertObj(
+              'New player',
+              `new player joined to the room with name: ${parsedData.newClientConnected.clientName}`,
+              'info'
+            )
+          )
+        )
       }
     }
   }, [lastMessage])

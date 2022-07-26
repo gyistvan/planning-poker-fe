@@ -5,14 +5,19 @@ import axios from 'axios'
 import RoomRoot from './components/room/RoomRoot'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { JoinRoom } from './components/JoinRoom/JoinRoom'
+import { AppAlert } from './components/AppAlert/AppAlert'
 
 const env = process.env.NODE_ENV
 
-axios.defaults.baseURL = env === 'production' ? 'https://planning-poker-vyno-be.herokuapp.com/' : 'http://127.0.0.1:4000/'
+axios.defaults.baseURL =
+  env === 'production'
+    ? 'https://planning-poker-vyno-be.herokuapp.com/'
+    : 'http://127.0.0.1:4000/'
 
 function App() {
   return (
     <BrowserRouter>
+      <AppAlert />
       <Header></Header>
       <Routes>
         <Route path="/" element={<RoomRoot />} />

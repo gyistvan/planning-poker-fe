@@ -9,6 +9,7 @@ export default function Header() {
   const { clientName } = useSelector((state: any) => state.app)
   return (
     <Box
+      role="heading"
       sx={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -17,12 +18,9 @@ export default function Header() {
         maxWidth: 'lg',
         margin: 'auto',
         height: '10vh',
-        minHeight: '110px',
       }}
     >
-      <header>
-        <img src={Logo} alt="planning poker logo" className={styles.logo} />
-      </header>
+      <img src={Logo} alt="planning poker logo" className={styles.logo} />
       {clientName && (
         <Box
           sx={{

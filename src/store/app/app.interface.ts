@@ -5,4 +5,8 @@ export interface AppState {
   isCreateRoomVisible: boolean
   isJoinRoomVisible: boolean
   clientId: string
+  isAlertVisible: boolean
+  alertMessage: string | undefined
+  alertType: string | undefined
+  alertTitle: string | undefined
 }

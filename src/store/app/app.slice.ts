@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { useSelector } from 'react-redux'
 import { uuid } from 'uuidv4'
 import { AppState } from './app.interface'
 
@@ -25,6 +26,10 @@ const initialState: AppState = {
   isCreateRoomVisible: false,
   isJoinRoomVisible: false,
   clientId: getClientId(),
+  isAlertVisible: false,
+  alertMessage: undefined,
+  alertType: undefined,
+  alertTitle: undefined,
 }
 
 export const appSlice = createSlice({
@@ -49,6 +54,18 @@ export const appSlice = createSlice({
     changeJoinRoomVisibility: (state, action) => {
       state.isJoinRoomVisible = action.payload
     },
+    showAlert: (state, action) => {
+      state.isAlertVisible = true
+      state.alertMessage = action.payload.alertMessage
+      state.alertType = action.payload.alertType
+      state.alertTitle = action.payload.alertTitle
+    },
+    hideAlert: (state) => {
+      state.isAlertVisible = false
+      state.alertMessage = undefined
+      state.alertType = undefined
+      state.alertTitle = undefined
+    },
   },
 })
 
@@ -58,6 +75,10 @@ export const {
   saveClientName,
   changeCreateRoomVisibility,
   changeJoinRoomVisibility,
+  showAlert,
+  hideAlert,
 } = appSlice.actions
 
 export default appSlice.reducer
+
+export const useAppSelector = () => useSelector((state: any) => state.app)

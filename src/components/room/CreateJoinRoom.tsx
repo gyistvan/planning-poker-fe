@@ -6,8 +6,11 @@ import {
   changeCreateRoomVisibility,
   changeJoinRoomVisibility,
   changeSocketUrl,
+  showAlert,
+  useAppSelector,
 } from '../../store/app/app.slice'
 import { changeRoomName } from '../../store/room/room.slice'
+import { createAlertObj } from '../../utils/createAlertObj'
 
 interface ICreateRoom {
   type: string
@@ -15,28 +18,70 @@ interface ICreateRoom {
 
 export default function CreateJoinRoom(props: ICreateRoom) {
   const { type } = props
-  const { clientId, clientName } = useSelector((state: any) => state.app)
+  const { clientId, clientName } = useAppSelector()
   const { roomName } = useSelector((state: any) => state.roomSettings)
   const dispatch = useDispatch()
-  console.log('type', type)
 
   const createRoom = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     axios
       .post(`createRoom/${roomName}/${clientId}/${clientName}`)
       .then((response: any) => {
-        console.log(response.data.port, "poooort")
         dispatch(changeSocketUrl(response.data.port))
         dispatch(changeCreateRoomVisibility(false))
+        dispatch(
+          showAlert(
+            createAlertObj(
+              'Room Created',
+              `Room has been created with name: ${roomName}`,
+              'success'
+            )
+          )
+        )
+      })
+      .catch((response: any) => {
+        dispatch(
+          showAlert(
+            createAlertObj(
+              'Room does not exist',
+              response.response.data.message,
+              'error'
+            )
+          )
+        )
+        dispatch(changeJoinRoomVisibility(false))
       })
   }
 
-  const joinRoom = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
+  const joinRoom = (e?: MouseEvent<HTMLButtonElement>) => {
+    if (e) {
+      e.preventDefault()
+    }
     axios
       .post(`joinRoom/${roomName}/${clientId}/${clientName}`)
       .then((response: any) => {
         dispatch(changeSocketUrl(response.data.port))
+        dispatch(changeJoinRoomVisibility(false))
+        dispatch(
+          showAlert(
+            createAlertObj(
+              'Joined to room',
+              `You have been joined to room: ${roomName}`,
+              'success'
+            )
+          )
+        )
+      })
+      .catch((response: any) => {
+        dispatch(
+          showAlert(
+            createAlertObj(
+              'Room does not exist',
+              response.response.data.message,
+              'error'
+            )
+          )
+        )
         dispatch(changeJoinRoomVisibility(false))
       })
   }
