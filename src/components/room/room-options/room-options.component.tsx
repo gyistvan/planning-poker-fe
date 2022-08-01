@@ -8,7 +8,7 @@ import {
   Select,
   SelectChangeEvent,
 } from '@mui/material'
-import { CARD_OPTIONS } from '../../../utils/cardOptions'
+import { CARD_OPTIONS } from '../../../utils/card-options.constant'
 import { useDispatch } from 'react-redux'
 import { changeCardVisibility } from '../../../store/room/room.slice'
 

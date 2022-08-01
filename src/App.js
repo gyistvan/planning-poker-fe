@@ -1,11 +1,11 @@
 import './App.css'
 import React from 'react'
-import Header from './components/header/Header'
+import Header from './components/header/header.component'
 import axios from 'axios'
-import RoomRoot from './components/room/RoomRoot'
+import RoomRoot from './components/room/room-root.component'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { JoinRoom } from './components/JoinRoom/JoinRoom'
-import { AppAlert } from './components/AppAlert/AppAlert'
+import { JoinRoom } from './components/join-room/join-room.component'
+import { AppAlert } from './components/app-alert/app-alert.component'
 
 const env = process.env.NODE_ENV
 

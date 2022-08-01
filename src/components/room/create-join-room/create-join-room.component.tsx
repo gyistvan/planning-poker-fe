@@ -8,9 +8,9 @@ import {
   changeSocketUrl,
   showAlert,
   useAppSelector,
-} from '../../store/app/app.slice'
-import { changeRoomName } from '../../store/room/room.slice'
-import { createAlertObj } from '../../utils/createAlertObj'
+} from '../../../store/app/app.slice'
+import { changeRoomName } from '../../../store/room/room.slice'
+import { createAlertObj } from '../../../utils/create-alert-obj'
 
 interface ICreateRoom {
   type: string

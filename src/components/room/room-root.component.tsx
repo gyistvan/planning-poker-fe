@@ -1,8 +1,6 @@
-import axios from 'axios'
-import React, { MouseEvent, useState } from 'react'
-import { uuid } from 'uuidv4'
-import ActualRoom from './ActualRoom/ActualRoom'
-import CreateJoinRoom from './CreateJoinRoom'
+import React from 'react'
+import ActualRoom from './actual-room/actual-room.component'
+import CreateJoinRoom from './create-join-room/create-join-room.component'
 import Button from '@mui/material/Button'
 import { Box } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,7 +8,7 @@ import {
   changeCreateRoomVisibility,
   changeJoinRoomVisibility,
 } from '../../store/app/app.slice'
-import { ClientNameInput } from './ClientNameInput/ClientNameInput'
+import { ClientNameInput } from './client-name-input/client-name-input.component'
 
 export default function RoomRoot() {
   const {

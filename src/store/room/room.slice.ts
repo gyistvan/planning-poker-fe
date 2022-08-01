@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { CARD_OPTIONS } from '../../utils/cardOptions'
+import { useSelector } from 'react-redux'
+import { CARD_OPTIONS } from '../../utils/card-options.constant'
 import { RoomState } from './room.interface'
 
 const initialState: RoomState = {
@@ -38,3 +39,6 @@ export const {
 } = roomSlice.actions
 
 export default roomSlice.reducer
+
+export const useRoomSelector = () =>
+  useSelector((state: any) => state.roomSettings)

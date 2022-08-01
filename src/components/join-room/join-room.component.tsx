@@ -5,10 +5,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 import {
   changeJoinRoomVisibility,
   changeSocketUrl,
+  showAlert,
 } from '../../store/app/app.slice'
 import { changeRoomName } from '../../store/room/room.slice'
-import { ClientNameInput } from '../room/ClientNameInput/ClientNameInput'
-import CreateJoinRoom from '../room/CreateJoinRoom'
+import { createAlertObj } from '../../utils/create-alert-obj'
+import { ClientNameInput } from '../room/client-name-input/client-name-input.component'
+import CreateJoinRoom from '../room/create-join-room/create-join-room.component'
 
 export const JoinRoom = () => {
   let { roomName } = useParams()
@@ -17,7 +19,6 @@ export const JoinRoom = () => {
   )
 
   const navigate = useNavigate()
-
   const dispatch = useDispatch()
 
   const joinRoom = async () => {
@@ -27,6 +28,15 @@ export const JoinRoom = () => {
     await dispatch(changeRoomName(roomName))
     await dispatch(changeSocketUrl(port))
     await dispatch(changeJoinRoomVisibility(false))
+    await dispatch(
+      showAlert(
+        createAlertObj(
+          'Joined to room',
+          `You have been joined to room: ${roomName}`,
+          'success'
+        )
+      )
+    )
 
     navigate('/')
   }

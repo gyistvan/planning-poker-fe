@@ -2,9 +2,9 @@ import { List, ListItem, ListItemText } from '@mui/material'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Card } from '../../../store/room/room.interface'
-import { CARD_OPTIONS } from '../../../utils/cardOptions'
-import RoomOptions from '../RoomOptions/RoomOptions'
-import UserCard from '../UserCard/UserCard'
+import { CARD_OPTIONS } from '../../../utils/card-options.constant'
+import RoomOptions from '../room-options/room-options.component'
+import UserCard from '../user-card/user-card.component'
 
 export interface IUserList {
   sendMessage: Function

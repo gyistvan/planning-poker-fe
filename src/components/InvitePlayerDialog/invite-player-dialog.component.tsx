@@ -1,15 +1,10 @@
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  Icon,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Button, Dialog, DialogTitle, TextField } from '@mui/material'
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import { Box } from '@mui/system'
+import { showAlert } from '../../store/app/app.slice'
+import { createAlertObj } from '../../utils/create-alert-obj'
 
 interface IInvitePlayerDialog {}
 
@@ -18,12 +13,14 @@ export const InvitePlayerDialog: React.FC<IInvitePlayerDialog> = () => {
     useState(false)
   const { socketUrl } = useSelector((state: any) => state.app)
   const { roomName } = useSelector((state: any) => state.roomSettings)
+  const dispatch = useDispatch()
 
   const getRoomUrl = (): string => window.location.href + 'joinRoom/' + roomName
 
   const copyUrlToClipBoard = () => {
     navigator.clipboard.writeText(getRoomUrl())
     setIsInvitePlayerDialogOpen(false)
+    dispatch(showAlert(createAlertObj(undefined, 'Copied', 'info')))
   }
 
   return (

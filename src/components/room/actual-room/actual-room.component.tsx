@@ -2,13 +2,14 @@ import React, { useEffect } from 'react'
 import { Box, Typography } from '@mui/material'
 import useWebSocket from 'react-use-websocket'
 import { Card } from '../../../store/room/room.interface'
-import VoteCard from '../voteCard/VoteCard'
+import VoteCard from '../vote-card/vote-card.component'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeSettings } from '../../../store/room/room.slice'
 import { changeVotes } from '../../../store/vote/vote.slice'
-import { UserList } from '../UserList/UserList'
+import { UserList } from '../user-list/user-list.component'
 import { showAlert, useAppSelector } from '../../../store/app/app.slice'
-import { createAlertObj } from '../../../utils/createAlertObj'
+import { createAlertObj } from '../../../utils/create-alert-obj'
+import { cards, cardsWrapper, users, wrapper } from './actual-room.style'
 
 export default function ActualRoom() {
   const { votes } = useSelector((state: any) => state.votes)
@@ -27,6 +28,9 @@ export default function ActualRoom() {
     if (lastMessage !== null) {
       let parsedData = JSON.parse(lastMessage.data)
       console.log(parsedData, 'parsedData')
+      if (parsedData.cardsRevealed) {
+        dispatch(showAlert(createAlertObj(undefined, 'Cards revealed', 'info')))
+      }
       if (parsedData.state) {
         dispatch(changeVotes(parsedData.state))
       }
@@ -52,37 +56,23 @@ export default function ActualRoom() {
 
   const sendVote = (vote: Card) => {
     sendMessage(JSON.stringify({ vote, clientId }))
+    dispatch(
+      showAlert(
+        createAlertObj(undefined, `Selected vote: ${vote.display}`, 'info')
+      )
+    )
   }
 
   return (
     <>
-      <Box
-        sx={{
-          m: 2,
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
+      <Box sx={wrapper}>
         <>
           {roomSettings && roomSettings.actualCards && (
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: '40%',
-                margin: '10px 30%',
-              }}
-            >
+            <Box sx={cardsWrapper}>
               <Typography variant="h5">
                 Cards: {roomSettings.actualCards.name}
               </Typography>
-              <Box
-                sx={{
-                  display: 'flex',
-                  width: '100%',
-                  justifyContent: 'space-between',
-                }}
-              >
+              <Box sx={cards}>
                 {roomSettings.actualCards &&
                   roomSettings.actualCards.cards.map((card: any) => (
                     <VoteCard
@@ -96,14 +86,7 @@ export default function ActualRoom() {
           )}
         </>
       </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          m: 2,
-          width: '30ch',
-        }}
-      >
+      <Box sx={users}>
         {votes[clientId] && (
           <UserList isOwner={votes[clientId].owner} sendMessage={sendMessage} />
         )}
